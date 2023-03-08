@@ -40,13 +40,13 @@ class ShippingLabel extends Model
 
       'po_vendor_name',
 
-      'isprinted',
+      'printed_at',
 
       'created_at',
       'updated_at'
       ];
 
       //!Data hidden
-    protected $hidden = ['isprinted'];
+   // protected $hidden = ['isprinted'];
 
 }

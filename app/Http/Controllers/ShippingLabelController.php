@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-
 class ShippingLabelController extends Controller
 {
 	
@@ -26,19 +25,12 @@ class ShippingLabelController extends Controller
 			  ];
 
 
-        
 
-        // flush all output
-        ob_flush();
-        flush();
-
-        // if you're using sessions, this prevents subsequent requests
-        // from hanging while the background process executes
-        if (session_id()) {session_write_close();}
-		
         return response()->json($responseFalse, 200);
 
         }
+
+
     public function index()
     {
 	
@@ -47,20 +39,12 @@ class ShippingLabelController extends Controller
         // ? descending(datetime)	
         
         
-        
-        // flush all output
-         ob_flush();
-         flush();
 
-         // if you're using sessions, this prevents subsequent requests
-        // from hanging while the background process executes
-         if (session_id()) {session_write_close();}
+
+
         return response()->json($product, 200);
-		
-		//->header('Connection', 'keep-alive')
-		//->header('Keep-alive', '30000');
+	
     }
-
 
     public function store(Request $request)
     {
@@ -96,18 +80,12 @@ class ShippingLabelController extends Controller
                     ]
 
                 ];
+				
                 
 
-                // flush all output
-                ob_flush();
-                flush();
-
-                // if you're using sessions, this prevents subsequent requests
-                // from hanging while the background process executes
-                if (session_id()) {session_write_close();}
-                
                 return response($responseFalse, 400);
-				//->header('Connection', 'close');
+				
+				
             }
         }
 
@@ -174,64 +152,140 @@ class ShippingLabelController extends Controller
 
 
         if ($shippingLabel->save() == true) {
-            
-                // flush all output
-                ob_flush();
-                flush();
+			
 
-                // if you're using sessions, this prevents subsequent requests
-                // from hanging while the background process executes
-                if (session_id()) {session_write_close();}
             return response()->json($responseOK, 200);
-			//->header('Connection', 'close');
-        } else {
-
-            $responseFalse = [
-                "responseCode" => 500,
-
-                'timestamp' =>  Carbon::now(),
-                'errorDetails' => [
-                    'status' => 'Internal Server Error',
-                ]
-            ];
-            
-                // flush all output
-                ob_flush();
-                flush();
-
-                // if you're using sessions, this prevents subsequent requests
-                // from hanging while the background process executes
-                if (session_id()) {session_write_close();}
-            return response($responseFalse, 500);
-			//->header('Connection', 'close');
+			
         }
+    
     }
 
 
     public function print($id)
     {
+       
+        if (!is_numeric($id) ){
+            $err = ["error" => "Input must be a number."];
 
-        $shippingLabel = ShippingLabel::where('id', $id);
-        $time = Carbon::now();
-        $shippingLabel->update([
+            return response()->json($err, 400);
+        }
 
-            'printed_at' => $time
-        ]);
-
-        $res = [
-
-            'msg' => 'Shipping Label has been Printed',
-
-        ];
+ 
+            $shippingLabel = ShippingLabel::where('id', $id);
+            $time = Carbon::now();
+            $shippingLabel->update([
+    
+                'printed_at' => $time
+            ]);
+    
+            $res = [
+    
+                'msg' => 'Shipping Label has been Printed',
+    
+            ];
+    
+            
+            return response()->json($res, 200);
+            
 
         
-            // flush all output
-        ob_flush();
-        flush();
-        // if you're using sessions, this prevents subsequent requests
-        // from hanging while the background process executes
-        if (session_id()) {session_write_close();}
-        return response()->json($res, 200);
-		//->header('Connection', 'close');
     }
-}
+
+
+    public function searchreprint($created)
+    {
+
+        // $date = $request->date;
+
+        $shippingLabel = ShippingLabel::where('created_at', 'LIKE', '%'. $created.'%')
+        ->whereNotNull('printed_at')->get();
+    
+    
+        $dd = $shippingLabel;
+
+        if($dd->isEmpty()){
+
+            $err = ["error" => "no shipping label printed at this date."];
+
+            return response()->json($err, 400);
+
+        }
+        
+        
+        $res =  $shippingLabel;
+    
+        return response()->json($res, 200);
+
+    }
+
+
+    
+    public function reprint($id)
+    {
+
+
+        if (!is_numeric($id) ){
+            $err = ["error" => "Input must be a number."];
+
+            return response()->json($err, 400);
+        }   
+
+
+        $shippingLabel = ShippingLabel::where('id', $id)->get();
+      
+
+        if($shippingLabel->isEmpty()){
+            
+            $err = ["error" => "No shipping label with this ID."];
+
+            return response()->json($err, 400);
+        
+        }
+
+
+        $dd = $shippingLabel->toArray();
+        $pa =  $dd[0]["printed_at"];
+        
+
+        if($pa == null){
+
+            $err = ["error" => "Shipping label not in reprint list."];
+
+            return response()->json($err, 400);
+        }
+        else{
+            $shippingLabel = ShippingLabel::where('id', $id);
+            
+
+            $shippingLabel->update([
+
+                'printed_at' => null
+            ]);
+    
+            $res = [
+    
+                'msg' => 'Shipping Label now can be Reprinted',
+    
+            ];
+    
+            
+    
+          
+            return response()->json(
+                $res , 200);
+
+        }
+        
+
+    }
+
+
+
+    }
+        
+	
+    
+
+    
+
+

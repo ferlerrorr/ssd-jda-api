@@ -28,6 +28,10 @@ Route::group(['prefix'=>'/shipping-label'],function(){
     Route::put('/print/{id}',[App\Http\Controllers\ShippingLabelController::class,'print']);
 	
    Route::get('/status',[App\Http\Controllers\ShippingLabelController::class,'status']);
+   
+   Route::get('/reprints-list/{created}',[App\Http\Controllers\ShippingLabelController::class,'searchreprint']);
+
+    //   Route::get('/reprint/{id}',[App\Http\Controllers\ShippingLabelController::class,'reprint']);
 
 });
 
