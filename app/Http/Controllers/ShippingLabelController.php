@@ -163,16 +163,33 @@ class ShippingLabelController extends Controller
 
     public function print($id)
     {
-       
+
         if (!is_numeric($id) ){
             $err = ["error" => "Input must be a number."];
 
             return response()->json($err, 400);
         }
 
- 
+
+             $shippingLabelCC = ShippingLabel::where('id', $id)->firstOrfail();
+
+            $printed_at =  $shippingLabelCC->printed_at;   
+
+
+            if($printed_at == !null){
+                
+                $err = [
+        
+                    'msg' => 'Shipping label not found',
+        
+                ];
+
+                return response()->json($err, 404);
+            }else{
+                
             $shippingLabel = ShippingLabel::where('id', $id);
             $time = Carbon::now();
+            
             $shippingLabel->update([
     
                 'printed_at' => $time
@@ -186,7 +203,7 @@ class ShippingLabelController extends Controller
     
             
             return response()->json($res, 200);
-            
+            }
 
         
     }
