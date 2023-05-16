@@ -10,40 +10,38 @@ use Illuminate\Support\Facades\Validator;
 
 class ShippingLabelController extends Controller
 {
-	
 
-      public function status()
-	 {
-		
-		 $responseFalse = [
-           
-			"responseCode" => 200,
-			 'timestamp' =>  Carbon::now(),
-			'Details' => [
-			'status' => 'connected',
-			 ]
-			  ];
+
+    public function status()
+    {
+
+        $responseFalse = [
+
+            "responseCode" => 200,
+            'timestamp' =>  Carbon::now(),
+            'Details' => [
+                'status' => 'connected',
+            ]
+        ];
 
 
 
         return response()->json($responseFalse, 200);
-
-        }
+    }
 
 
     public function index()
     {
-	
+
         $product = ShippingLabel::where('printed_at', '')->orWhereNull('printed_at')->orderBy('created_at', 'ASC')->limit(50)->get();
         // ? filter first (50)
         // ? descending(datetime)	
-        
-        
+
+
 
 
 
         return response()->json($product, 200);
-	
     }
 
     public function store(Request $request)
@@ -51,7 +49,7 @@ class ShippingLabelController extends Controller
 
         $datas = $request->all();
 
-        foreach ($datas as $data) { 
+        foreach ($datas as $data) {
             $validator = Validator::Make($data, [
                 'transfer_number' => 'required|string|max:20', // * 8 > 20 
                 'po_trans_loc_code_from' => 'required|numeric|digits_between:1,10', // * 5 > 10
@@ -80,12 +78,10 @@ class ShippingLabelController extends Controller
                     ]
 
                 ];
-				
-                
+
+
 
                 return response($responseFalse, 400);
-				
-				
             }
         }
 
@@ -152,60 +148,56 @@ class ShippingLabelController extends Controller
 
 
         if ($shippingLabel->save() == true) {
-			
+
 
             return response()->json($responseOK, 200);
-			
         }
-    
     }
 
 
     public function print($id)
     {
 
-        if (!is_numeric($id) ){
+        if (!is_numeric($id)) {
             $err = ["error" => "Input must be a number."];
 
             return response()->json($err, 400);
         }
 
 
-             $shippingLabelCC = ShippingLabel::where('id', $id)->firstOrfail();
+        $shippingLabelCC = ShippingLabel::where('id', $id)->firstOrfail();
 
-            $printed_at =  $shippingLabelCC->printed_at;   
+        $printed_at =  $shippingLabelCC->printed_at;
 
 
-            if($printed_at == !null){
-                
-                $err = [
-        
-                    'msg' => 'Shipping label not found',
-        
-                ];
+        if ($printed_at == !null) {
 
-                return response()->json($err, 404);
-            }else{
-                
+            $err = [
+
+                'msg' => 'Shipping label not found',
+
+            ];
+
+            return response()->json($err, 404);
+        } else {
+
             $shippingLabel = ShippingLabel::where('id', $id);
             $time = Carbon::now();
-            
+
             $shippingLabel->update([
-    
+
                 'printed_at' => $time
             ]);
-    
-            $res = [
-    
-                'msg' => 'Shipping Label has been Printed',
-    
-            ];
-    
-            
-            return response()->json($res, 200);
-            }
 
-        
+            $res = [
+
+                'msg' => 'Shipping Label has been Printed',
+
+            ];
+
+
+            return response()->json($res, 200);
+        }
     }
 
 
@@ -214,95 +206,80 @@ class ShippingLabelController extends Controller
 
         // $date = $request->date;
 
-        $shippingLabel = ShippingLabel::where('created_at', 'LIKE', '%'. $created.'%')
-        ->whereNotNull('printed_at')->get();
-    
-    
+        $shippingLabel = ShippingLabel::where('created_at', 'LIKE', '%' . $created . '%')
+            ->whereNotNull('printed_at')->get();
+
+
         $dd = $shippingLabel;
 
-        if($dd->isEmpty()){
+        if ($dd->isEmpty()) {
 
             $err = ["error" => "no shipping label printed at this date."];
 
             return response()->json($err, 400);
-
         }
-        
-        
-        $res =  $shippingLabel;
-    
-        return response()->json($res, 200);
 
+
+        $res =  $shippingLabel;
+
+        return response()->json($res, 200);
     }
 
 
-    
+
     public function reprint($id)
     {
 
 
-        if (!is_numeric($id) ){
+        if (!is_numeric($id)) {
             $err = ["error" => "Input must be a number."];
 
             return response()->json($err, 400);
-        }   
+        }
 
 
         $shippingLabel = ShippingLabel::where('id', $id)->get();
-      
 
-        if($shippingLabel->isEmpty()){
-            
+
+        if ($shippingLabel->isEmpty()) {
+
             $err = ["error" => "No shipping label with this ID."];
 
             return response()->json($err, 400);
-        
         }
 
 
         $dd = $shippingLabel->toArray();
         $pa =  $dd[0]["printed_at"];
-        
 
-        if($pa == null){
+
+        if ($pa == null) {
 
             $err = ["error" => "Shipping label not in reprint list."];
 
             return response()->json($err, 400);
-        }
-        else{
+        } else {
             $shippingLabel = ShippingLabel::where('id', $id);
-            
+
 
             $shippingLabel->update([
 
                 'printed_at' => null
             ]);
-    
+
             $res = [
-    
+
                 'msg' => 'Shipping Label now can be Reprinted',
-    
+
             ];
-    
-            
-    
-          
+
+
+
+
             return response()->json(
-                $res , 200);
-
+                $res,
+                200
+            );
         }
-        
-
     }
-
-
-
-    }
-        
-	
-    
-
-    
-
-
+}

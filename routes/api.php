@@ -19,22 +19,35 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix'=>'/shipping-label'],function(){
+Route::group(['prefix' => '/shipping-label'], function () {
 
-    Route::get('/print',[App\Http\Controllers\ShippingLabelController::class,'index']);
+    Route::get('/print', [App\Http\Controllers\ShippingLabelController::class, 'index']);
 
-    Route::post('/new',[App\Http\Controllers\ShippingLabelController::class,'store']);
-    
-    Route::put('/print/{id}',[App\Http\Controllers\ShippingLabelController::class,'print']);
-	
-   Route::get('/status',[App\Http\Controllers\ShippingLabelController::class,'status']);
-   
-   Route::get('/reprints-list/{created}',[App\Http\Controllers\ShippingLabelController::class,'searchreprint']);
+    Route::post('/new', [App\Http\Controllers\ShippingLabelController::class, 'store']);
+
+    Route::put('/print/{id}', [App\Http\Controllers\ShippingLabelController::class, 'print']);
+
+    Route::get('/status', [App\Http\Controllers\ShippingLabelController::class, 'status']);
+
+    Route::get('/reprints-list/{created}', [App\Http\Controllers\ShippingLabelController::class, 'searchreprint']);
 
     //   Route::get('/reprint/{id}',[App\Http\Controllers\ShippingLabelController::class,'reprint']);
 
 });
 
-Route::fallback(function (){
+
+Route::group(['prefix' => '/print-label'], function () {
+
+    Route::get('/trf/{transfer_number}', [App\Http\Controllers\PrintedLabelController::class, 'printall']);
+
+    Route::post('/{transfer_number}', [App\Http\Controllers\PrintedLabelController::class, 'storeprint']);
+
+    Route::put('/{id}', [App\Http\Controllers\PrintedLabelController::class, 'updateprintdata']);
+
+    Route::get('/id/{id}', [App\Http\Controllers\PrintedLabelController::class, 'showprintdata']);
+});
+
+
+Route::fallback(function () {
     abort(404, 'API resource not found');
 });
