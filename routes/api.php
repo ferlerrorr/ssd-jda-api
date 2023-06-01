@@ -48,6 +48,18 @@ Route::group(['prefix' => '/print-label'], function () {
 });
 
 
+
+
+Route::group(['prefix' => '/reprint-label'], function () {
+
+    Route::post('/ctn/{counter_number}', [App\Http\Controllers\PrintedLabelController::class, 'reprintStore']);
+
+    Route::get('/ctn', [App\Http\Controllers\PrintedLabelController::class, 'reprintGetAll']);
+
+    Route::put('/ctn/update/{counter_number}', [App\Http\Controllers\PrintedLabelController::class, 'reprintUpdate']);
+});
+
+
 Route::fallback(function () {
     abort(404, 'API resource not found');
 });
