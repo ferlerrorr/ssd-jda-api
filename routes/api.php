@@ -31,6 +31,10 @@ Route::group(['prefix' => '/shipping-label'], function () {
 
     Route::get('/reprints-list/{created}', [App\Http\Controllers\ShippingLabelController::class, 'searchreprint']);
 
+    Route::get('/search/{trf}', [App\Http\Controllers\ShippingLabelController::class, 'search']);
+
+    Route::get('/patch-update/{trf}', [App\Http\Controllers\ShippingLabelController::class, 'patchUpdate']);
+
     //   Route::get('/reprint/{id}',[App\Http\Controllers\ShippingLabelController::class,'reprint']);
 
 });
