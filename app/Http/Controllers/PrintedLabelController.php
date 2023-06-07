@@ -88,9 +88,8 @@ class PrintedLabelController extends Controller
     public function updateprintdata($id)
     {
 
-        $data = PrintLabel::find($id);
-
         $dtime = Carbon::now();
+        $data = PrintLabel::find($id);
 
         $data->update([
 
