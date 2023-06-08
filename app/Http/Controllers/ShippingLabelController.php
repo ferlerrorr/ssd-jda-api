@@ -30,78 +30,12 @@ class ShippingLabelController extends Controller
     }
 
 
-    public function search($trf)
-    {
-
-        $trf = ShippingLabel::where('transfer_number', $trf)->get();
-
-        $dd = $trf[0];
-
-        return response()->json($dd, 200);
-    }
-
-
-
-    public function patchUpdate(Request $request, $id)
-    {
-
-        $shippingLabel = ShippingLabel::where('id', $id);
-
-        $transfer_number = $request->transfer_number;
-        $po_trans_loc_code_from = $request->po_trans_loc_code_from;
-        $po_trans_loc_from_name = $request->po_trans_loc_from_name;
-        $po_trans_loc_code_to = $request->po_trans_loc_code_to;
-        $po_trans_loc_to_name = $request->po_trans_loc_to_name;
-        $po_trans_loc_to_route_desc = $request->po_trans_loc_to_route_desc;
-        $po_number = $request->po_number;
-        $counter_number = $request->counter_number;
-        $od_number = $request->od_number;
-        $sales_invoice_number = $request->sales_invoice_number;
-        $total_box_count = $request->total_box_count;
-        $checked_by = $request->checked_by;
-        $po_vendor_name = $request->po_vendor_name;
-
-
-
-
-        $shippingLabel->update([
-
-            "transfer_number" => $transfer_number,
-            "po_trans_loc_code_from" => $po_trans_loc_code_from,
-            "po_trans_loc_from_name" => $po_trans_loc_from_name,
-            "po_trans_loc_code_to" => $po_trans_loc_code_to,
-            "po_trans_loc_to_name" => $po_trans_loc_to_name,
-            "po_trans_loc_to_route_desc" => $po_trans_loc_to_route_desc,
-            "po_number" => $po_number,
-            "counter_number" => $counter_number,
-            "od_number" => $od_number,
-            "sales_invoice_number" => $sales_invoice_number,
-            "total_box_count" => $total_box_count,
-            "checked_by" => $checked_by,
-            "po_vendor_name" => $po_vendor_name
-        ]);
-
-        $res = [
-
-            'msg' => 'Shipping Label is now updated',
-
-        ];
-        return response()->json(
-            $res,
-            200
-        );
-    }
-
-
-
-
-
 
 
     public function index()
     {
 
-        $product = ShippingLabel::where('printed_at', '')->orWhereNull('printed_at')->orderBy('created_at', 'ASC')->limit(50)->get();
+        $product = ShippingLabel::where('printed_at', '')->orWhereNull('printed_at')->orderBy('created_at', 'ASC')->limit(500)->get();
         // ? filter first (50)
         // ? descending(datetime)	
 
