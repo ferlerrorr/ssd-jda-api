@@ -8,6 +8,8 @@ services:
       args:
         WWWGROUP: "${WWWGROUP}"
     image: sail-8.2/app
+    restart: unless-stopped
+    tty: true
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
@@ -30,6 +32,8 @@ services:
   mysql:
     command: --max_allowed_packet=100M
     image: "mysql/mysql-server:8.0"
+    restart: unless-stopped
+    tty: true
     ports:
       - "${FORWARD_DB_PORT:-4406}:4406"
     environment:
@@ -52,6 +56,8 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:5.2.0-apache
+    restart: unless-stopped
+    tty: true
     ports:
       - 8080:80
     networks:
