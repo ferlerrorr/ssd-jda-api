@@ -3,7 +3,7 @@ version: "3"
 services:
   laravel.test:
     build:
-      context: ./vendor/laravel/sail/runtimes/8.2
+      context: ./docker/8.2
       dockerfile: Dockerfile
       args:
         WWWGROUP: "${WWWGROUP}"
@@ -17,16 +17,19 @@ services:
       LARAVEL_SAIL: 1
       XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
       XDEBUG_CONFIG: "${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}"
+      PHP_INI_POST_MAX_SIZE: 100M
+      PHP_INI_UPLOAD_MAX_FILESIZE: 100M
     volumes:
       - ".:/var/www/html"
+      - "./docker/8.2/php.ini:/usr/local/etc/php/conf.d/php.ini"
     networks:
       - sail
     depends_on:
       - mysql
       - phpmyadmin
   mysql:
+    command: --max_allowed_packet=100M
     image: "mysql/mysql-server:8.0"
-    tty: true
     ports:
       - "${FORWARD_DB_PORT:-4406}:4406"
     environment:
@@ -36,6 +39,7 @@ services:
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_INIT_LIMIT: 1000M
     volumes:
       - "sail-mysql:/var/lib/mysql"
       - "./vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh"
@@ -54,6 +58,7 @@ services:
       - sail
     environment:
       - PMA_ARBITRARY=1
+      - UPLOAD_LIMIT=10000M
 
 networks:
   sail:
