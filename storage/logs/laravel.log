@@ -8530,3 +8530,12 @@ Did you mean one of these?
 #48 /var/www/html/server.php(21): require_once('...')
 #49 {main}
 "} 
+[2023-06-10 22:26:19] local.ERROR: Command "about" is not defined. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"about\" is not defined. at /home/ferl/ssd-jda-api/vendor/symfony/console/Application.php:720)
+[stacktrace]
+#0 /home/ferl/ssd-jda-api/vendor/symfony/console/Application.php(259): Symfony\\Component\\Console\\Application->find()
+#1 /home/ferl/ssd-jda-api/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun()
+#2 /home/ferl/ssd-jda-api/vendor/laravel/framework/src/Illuminate/Console/Application.php(94): Symfony\\Component\\Console\\Application->run()
+#3 /home/ferl/ssd-jda-api/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run()
+#4 /home/ferl/ssd-jda-api/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 

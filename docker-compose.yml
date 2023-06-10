@@ -23,7 +23,6 @@ services:
       PHP_INI_UPLOAD_MAX_FILESIZE: 100M
     volumes:
       - ".:/var/www/html"
-      - "./docker/8.2/php.ini:/usr/local/etc/php/conf.d/php.ini"
     networks:
       - sail
     depends_on:
