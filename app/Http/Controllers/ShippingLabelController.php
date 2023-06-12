@@ -59,7 +59,7 @@ class ShippingLabelController extends Controller
                 'po_trans_loc_to_route_desc' => 'required|string|max:50', // * 35 > 50
                 'po_number' => 'required|numeric|digits_between:1,20', // * 10 > 20
                 'counter_number' => 'required|numeric|digits_between:1,10', // * 3 > 10
-                'od_number' => 'required|numeric|digits_between:1,30', // * 15 > 30
+                'od_number' => 'numeric|digits_between:0,30|min:0', // * 15 > 30
                 'sales_invoice_number' => 'required|string|max:50', // * 20 > 50
                 'total_box_count' => 'required|numeric|digits_between:1,10', // * 6 > 10
                 'checked_by' => 'required|string|max:10', //* 3 > 10
