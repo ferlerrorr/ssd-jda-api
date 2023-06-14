@@ -54,16 +54,16 @@ class ShippingLabelController extends Controller
         foreach ($datas as $data) {
             $validator = Validator::Make($data, [
                 'transfer_number' => 'required|string|max:20', // * 8 > 20 
-                'po_trans_loc_code_from' => 'required|numeric|digits_between:1,10', // * 5 > 10
+                'po_trans_loc_code_from' => 'required|numeric|digits_between:1,10|min:1|not_in:0', // * 5 > 10
                 'po_trans_loc_from_name' => 'required|string|max:20', // * 8 > 20
-                'po_trans_loc_code_to' => 'required|numeric|digits_between:1,10', // * 5 > 10
+                'po_trans_loc_code_to' => 'required|numeric|digits_between:1,10|min:1|not_in:0', // * 5 > 10
                 'po_trans_loc_to_name' => 'required|string|max:20', // * 8 > 20
                 'po_trans_loc_to_route_desc' => 'required|string|max:50', // * 35 > 50
                 'po_number' => 'required|numeric|digits_between:1,20', // * 10 > 20
-                'counter_number' => 'required|numeric|digits_between:1,10', // * 3 > 10
-                'od_number' => 'required|numeric|digits_between:1,30', // * 15 > 30
+                'counter_number' => 'required|numeric|digits_between:1,10|min:1|not_in:0', // * 3 > 10
+                'od_number' => 'numeric|digits_between:0,30|min:0', // * 15 > 30
                 'sales_invoice_number' => 'required|string|max:50', // * 20 > 50
-                'total_box_count' => 'required|numeric|digits_between:1,10', // * 6 > 10
+                'total_box_count' => 'required|numeric|digits_between:1,10|min:1|not_in:0', // * 6 > 10
                 'checked_by' => 'required|string|max:10', //* 3 > 10
                 'po_vendor_name' => 'required|string|max:100' // * 75 > 100
             ]);
