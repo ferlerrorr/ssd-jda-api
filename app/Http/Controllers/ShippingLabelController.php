@@ -57,7 +57,7 @@ class ShippingLabelController extends Controller
                 'po_trans_loc_code_to' => 'required|numeric|digits_between:1,10|min:1|not_in:0', // * 5 > 10
                 'po_trans_loc_to_name' => 'required|string|max:20', // * 8 > 20
                 'po_trans_loc_to_route_desc' => 'required|string|max:50', // * 35 > 50
-                'po_number' => 'required|numeric|digits_between:1,20', // * 10 > 20
+                'po_number' => 'required|numeric|digits_between:1,20|min:1|not_in:0', // * 10 > 20
                 'counter_number' => 'required|numeric|digits_between:1,10|min:1|not_in:0', // * 3 > 10
                 'od_number' => 'numeric|digits_between:0,30|min:0', // * 15 > 30
                 'sales_invoice_number' => 'required|string|max:50', // * 20 > 50
@@ -84,6 +84,7 @@ class ShippingLabelController extends Controller
                 return response($responseFalse, 400);
             }
         }
+
 
 
 
@@ -272,6 +273,10 @@ class ShippingLabelController extends Controller
                 'msg' => 'Shipping Label now can be Reprinted',
 
             ];
+
+
+
+
             return response()->json(
                 $res,
                 200
@@ -279,63 +284,69 @@ class ShippingLabelController extends Controller
         }
     }
 
-    // public function search($trf)
-    // {
-
-    //     $trf = ShippingLabel::where('transfer_number', $trf)->get();
-
-    //     $dd = $trf[0];
-
-    //     return response()->json($dd, 200);
-    // }
 
 
-    // public function patchUpdate(Request $request, $id)
-    // {
+    public function search($trf)
+    {
 
-    //     $shippingLabel = ShippingLabel::where('id', $id);
+        $trf = ShippingLabel::where('transfer_number', $trf)->get();
 
-    //     $transfer_number = $request->transfer_number;
-    //     $po_trans_loc_code_from = $request->po_trans_loc_code_from;
-    //     $po_trans_loc_from_name = $request->po_trans_loc_from_name;
-    //     $po_trans_loc_code_to = $request->po_trans_loc_code_to;
-    //     $po_trans_loc_to_name = $request->po_trans_loc_to_name;
-    //     $po_trans_loc_to_route_desc = $request->po_trans_loc_to_route_desc;
-    //     $po_number = $request->po_number;
-    //     $counter_number = $request->counter_number;
-    //     $od_number = $request->od_number;
-    //     $sales_invoice_number = $request->sales_invoice_number;
-    //     $total_box_count = $request->total_box_count;
-    //     $checked_by = $request->checked_by;
-    //     $po_vendor_name = $request->po_vendor_name;
+        $dd = $trf[0];
+
+        return response()->json($dd, 200);
+    }
 
 
-    //     $shippingLabel->update([
 
-    //         "transfer_number" => $transfer_number,
-    //         "po_trans_loc_code_from" => $po_trans_loc_code_from,
-    //         "po_trans_loc_from_name" => $po_trans_loc_from_name,
-    //         "po_trans_loc_code_to" => $po_trans_loc_code_to,
-    //         "po_trans_loc_to_name" => $po_trans_loc_to_name,
-    //         "po_trans_loc_to_route_desc" => $po_trans_loc_to_route_desc,
-    //         "po_number" => $po_number,
-    //         "counter_number" => $counter_number,
-    //         "od_number" => $od_number,
-    //         "sales_invoice_number" => $sales_invoice_number,
-    //         "total_box_count" => $total_box_count,
-    //         "checked_by" => $checked_by,
-    //         "po_vendor_name" => $po_vendor_name
-    //     ]);
+    public function patchUpdate(Request $request, $id)
+    {
 
-    //     $res = [
+        $shippingLabel = ShippingLabel::where('id', $id);
 
-    //         'msg' => 'Shipping Label is now updated',
+        $transfer_number = $request->transfer_number;
+        $po_trans_loc_code_from = $request->po_trans_loc_code_from;
+        $po_trans_loc_from_name = $request->po_trans_loc_from_name;
+        $po_trans_loc_code_to = $request->po_trans_loc_code_to;
+        $po_trans_loc_to_name = $request->po_trans_loc_to_name;
+        $po_trans_loc_to_route_desc = $request->po_trans_loc_to_route_desc;
+        $po_number = $request->po_number;
+        $counter_number = $request->counter_number;
+        $od_number = $request->od_number;
+        $sales_invoice_number = $request->sales_invoice_number;
+        $total_box_count = $request->total_box_count;
+        $checked_by = $request->checked_by;
+        $po_vendor_name = $request->po_vendor_name;
+        $printed_at = $request->printed_at;
 
-    //     ];
-    //     return response()->json(
-    //         $res,
-    //         200
-    //     );
-    // }
 
+
+
+        $shippingLabel->update([
+
+            "transfer_number" => $transfer_number,
+            "po_trans_loc_code_from" => $po_trans_loc_code_from,
+            "po_trans_loc_from_name" => $po_trans_loc_from_name,
+            "po_trans_loc_code_to" => $po_trans_loc_code_to,
+            "po_trans_loc_to_name" => $po_trans_loc_to_name,
+            "po_trans_loc_to_route_desc" => $po_trans_loc_to_route_desc,
+            "po_number" => $po_number,
+            "counter_number" => $counter_number,
+            "od_number" => $od_number,
+            "sales_invoice_number" => $sales_invoice_number,
+            "total_box_count" => $total_box_count,
+            "checked_by" => $checked_by,
+            "po_vendor_name" => $po_vendor_name,
+            "printed_at" => $printed_at
+        ]);
+
+        $res = [
+
+            'msg' => 'Shipping Label is now updated',
+
+        ];
+        return response()->json(
+            $res,
+            200
+        );
+    }
 }

@@ -1,20 +1,22 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class ShippingLabel extends Model
 {
    /**
-     * ! The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'shipping_label';
+    * ! The table associated with the model.
+    *
+    * @var string
+    */
+   protected $table = 'shipping_label';
 
 
 
-      //!Public Data
-      protected $fillable = [
+   //!Public Data
+   protected $fillable = [
       'id',
 
       'transfer_number',
@@ -44,9 +46,11 @@ class ShippingLabel extends Model
 
       'created_at',
       'updated_at'
-      ];
+   ];
 
-      //!Data hidden
-   // protected $hidden = ['isprinted'];
-
+   //!Data hidden
+   protected $hidden = [
+      'created_at',
+      'updated_at'
+   ];
 }
