@@ -50,7 +50,6 @@ class ShippingLabel extends Model
 
    //!Data hidden
    protected $hidden = [
-      'created_at',
       'updated_at'
    ];
 }
