@@ -49,7 +49,5 @@ class ShippingLabel extends Model
    ];
 
    //!Data hidden
-   protected $hidden = [
-      'updated_at'
-   ];
+   // protected $hidden = ['updated_at'];
 }
